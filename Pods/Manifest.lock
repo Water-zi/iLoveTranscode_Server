@@ -1,0 +1,55 @@
+PODS:
+  - BlueCryptor (1.0.32)
+  - BlueECC (1.2.5)
+  - BlueRSA (1.0.200)
+  - CocoaMQTT (2.1.6):
+    - CocoaMQTT/Core (= 2.1.6)
+  - CocoaMQTT/Core (2.1.6):
+    - MqttCocoaAsyncSocket (~> 1.0.8)
+  - KituraContracts (1.2.1):
+    - LoggerAPI (~> 1.7)
+  - LoggerAPI (1.9.200):
+    - Logging (~> 1.1)
+  - Logging (1.4.0)
+  - MqttCocoaAsyncSocket (1.0.8)
+  - Starscream (4.0.6)
+  - SwiftJWT (3.6.200):
+    - BlueCryptor (~> 1.0)
+    - BlueECC (~> 1.1)
+    - BlueRSA (~> 1.0)
+    - KituraContracts (~> 1.2)
+    - LoggerAPI (~> 1.7)
+
+DEPENDENCIES:
+  - CocoaMQTT
+  - Starscream (~> 4.0.6)
+  - SwiftJWT
+
+SPEC REPOS:
+  trunk:
+    - BlueCryptor
+    - BlueECC
+    - BlueRSA
+    - CocoaMQTT
+    - KituraContracts
+    - LoggerAPI
+    - Logging
+    - MqttCocoaAsyncSocket
+    - Starscream
+    - SwiftJWT
+
+SPEC CHECKSUMS:
+  BlueCryptor: b0aee3d9b8f367b49b30de11cda90e1735571c24
+  BlueECC: 0d18e93347d3ec6d41416de21c1ffa4d4cd3c2cc
+  BlueRSA: dfeef51db96bcc4edec654956c1581adbda4e6a3
+  CocoaMQTT: 1f206228b29318eabdacad0c2e4e88575922c27a
+  KituraContracts: e845e60dc8627ad0a76fa55ef20a45451d8f830b
+  LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
+  Logging: beeb016c9c80cf77042d62e83495816847ef108b
+  MqttCocoaAsyncSocket: 77d3b74f76228dd5a05d1f9526eab101d415b30c
+  Starscream: fb2c4510bebf908c62bd383bcf05e673720e91fd
+  SwiftJWT: 88c412708f58c169d431d344c87bc79a87c830ae
+
+PODFILE CHECKSUM: 0b4e81c79b2c6ff2a5ce503e4aec63f7efef9bb0
+
+COCOAPODS: 1.15.0

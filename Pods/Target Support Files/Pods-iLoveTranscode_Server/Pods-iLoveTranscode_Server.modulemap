@@ -1,0 +1,6 @@
+framework module Pods_iLoveTranscode_Server {
+  umbrella header "Pods-iLoveTranscode_Server-umbrella.h"
+
+  export *
+  module * { export * }
+}

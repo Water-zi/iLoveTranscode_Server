@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "674D42B0-3588-4A65-8F7A-E646741EA2EB"
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8BAD5887-15D9-429C-8D00-1A9A261DDF15"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iLoveTranscode_Server/APNSServer.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "244"
+            endingLineNumber = "244"
+            landmarkName = "createJWT()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "8BAD5887-15D9-429C-8D00-1A9A261DDF15 - 99188f9209392a84"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iLoveTranscode_Server.APNSServer.createJWT(privateKeyData: Foundation.Data) -&gt; Swift.String"
+                  moduleName = "iLoveTranscode_Server"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/APNSServer.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "69"
+                  endingLineNumber = "69"
+                  offsetFromSymbolStart = "480">
+               </Location>
+               <Location
+                  uuid = "8BAD5887-15D9-429C-8D00-1A9A261DDF15 - 99188f9209392a84"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iLoveTranscode_Server.APNSServer.createJWT(privateKeyData: Foundation.Data) -&gt; Swift.String"
+                  moduleName = "iLoveTranscode_Server"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/APNSServer.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "69"
+                  endingLineNumber = "69"
+                  offsetFromSymbolStart = "384">
+               </Location>
+               <Location
+                  uuid = "8BAD5887-15D9-429C-8D00-1A9A261DDF15 - 99188f9209392a84"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iLoveTranscode_Server.APNSServer.createJWT(privateKeyData: Foundation.Data) -&gt; Swift.String"
+                  moduleName = "iLoveTranscode_Server"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/APNSServer.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "69"
+                  endingLineNumber = "69"
+                  offsetFromSymbolStart = "484">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D85049B6-9883-43F5-B922-E806FE29D172"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iLoveTranscode_Server/APNSServer.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "259"
+            endingLineNumber = "259"
+            landmarkName = "createJWT()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "D85049B6-9883-43F5-B922-E806FE29D172 - 99188f9209392894"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iLoveTranscode_Server.APNSServer.createJWT(privateKeyData: Foundation.Data) -&gt; Swift.String"
+                  moduleName = "iLoveTranscode_Server"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/APNSServer.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "85"
+                  endingLineNumber = "85"
+                  offsetFromSymbolStart = "1092">
+               </Location>
+               <Location
+                  uuid = "D85049B6-9883-43F5-B922-E806FE29D172 - 99188f9209392894"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iLoveTranscode_Server.APNSServer.createJWT(privateKeyData: Foundation.Data) -&gt; Swift.String"
+                  moduleName = "iLoveTranscode_Server"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/APNSServer.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "85"
+                  endingLineNumber = "85"
+                  offsetFromSymbolStart = "1168">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C30C5594-3A8C-4500-A3BA-E73CEEDC8D89"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iLoveTranscode_Server/ContentViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "316"
+            endingLineNumber = "316"
+            landmarkName = "publishData()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C40EEBDD-BFA0-432C-8696-9593C9D3B7DD"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iLoveTranscode_Server/ContentViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "211"
+            endingLineNumber = "211"
+            landmarkName = "connectToMQTTBlocker()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "C40EEBDD-BFA0-432C-8696-9593C9D3B7DD - 8db4c7e5a3444a5a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #4 (CocoaMQTT.CocoaMQTT5, CocoaMQTT.CocoaMQTT5Message, Swift.UInt16, Swift.Optional&lt;CocoaMQTT.MqttDecodePublish&gt;) -&gt; () in iLoveTranscode_Server.ContentView.ViewModel.connectToMQTTBlocker() -&gt; ()"
+                  moduleName = "iLoveTranscode_Server"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/ContentViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "181"
+                  endingLineNumber = "181"
+                  offsetFromSymbolStart = "444">
+               </Location>
+               <Location
+                  uuid = "C40EEBDD-BFA0-432C-8696-9593C9D3B7DD - 8db4c7e5a3444af9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #4 (CocoaMQTT.CocoaMQTT5, CocoaMQTT.CocoaMQTT5Message, Swift.UInt16, Swift.Optional&lt;CocoaMQTT.MqttDecodePublish&gt;) -&gt; () in iLoveTranscode_Server.ContentView.ViewModel.connectToMQTTBlocker() -&gt; ()"
+                  moduleName = "iLoveTranscode_Server"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/ContentViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "184"
+                  endingLineNumber = "184"
+                  offsetFromSymbolStart = "560">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1A91A8AE-0CFD-4EA5-852F-88978F0A69A2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iLoveTranscode_Server/ContentViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "335"
+            endingLineNumber = "335"
+            landmarkName = "publishData()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BC8ED522-39CB-46F9-962B-8C6D0276CD02"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iLoveTranscode_Server/Models/ProjectInfoModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "==(lhs:rhs:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4B60E1B9-36FC-4A64-960C-2FFD8DE7FCBD"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iLoveTranscode_Server/PythonObjectExtension.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
+            landmarkName = "callFunction(name:withArguments:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "4B60E1B9-36FC-4A64-960C-2FFD8DE7FCBD - 4e851920ace832e0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PythonKit.PythonObject.callFunction(name: Swift.String, withArguments: Swift.Array&lt;PythonKit.PythonConvertible&gt;) -&gt; Swift.Optional&lt;PythonKit.PythonObject&gt;"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/PythonObjectExtension.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "47"
+                  endingLineNumber = "47"
+                  offsetFromSymbolStart = "348">
+               </Location>
+               <Location
+                  uuid = "4B60E1B9-36FC-4A64-960C-2FFD8DE7FCBD - 4e851920ace832ae"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PythonKit.PythonObject.callFunction(name: Swift.String, withArguments: Swift.Array&lt;PythonKit.PythonConvertible&gt;) -&gt; Swift.Optional&lt;PythonKit.PythonObject&gt;"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/PythonObjectExtension.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "45"
+                  endingLineNumber = "45"
+                  offsetFromSymbolStart = "168">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AD56364B-CD79-48F2-B728-D14D8D869FA8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iLoveTranscode_Server/AppDelegate.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "16"
+            endingLineNumber = "16"
+            landmarkName = "applicationDidFinishLaunching(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "AD56364B-CD79-48F2-B728-D14D8D869FA8 - e74da8a6a2027292"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;.AppDelegate.applicationDidFinishLaunching(Foundation.Notification) -&gt; ()"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/AppDelegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "40">
+               </Location>
+               <Location
+                  uuid = "AD56364B-CD79-48F2-B728-D14D8D869FA8 - e74da8a6a2027292"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;.AppDelegate.applicationDidFinishLaunching(Foundation.Notification) -&gt; ()"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/AppDelegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "60">
+               </Location>
+               <Location
+                  uuid = "AD56364B-CD79-48F2-B728-D14D8D869FA8 - e74da8a6a2027292"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;.AppDelegate.applicationDidFinishLaunching(Foundation.Notification) -&gt; ()"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/AppDelegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "464">
+               </Location>
+               <Location
+                  uuid = "AD56364B-CD79-48F2-B728-D14D8D869FA8 - e74da8a6a2027292"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;.AppDelegate.applicationDidFinishLaunching(Foundation.Notification) -&gt; ()"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/AppDelegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "44">
+               </Location>
+               <Location
+                  uuid = "AD56364B-CD79-48F2-B728-D14D8D869FA8 - e74da8a6a2027292"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;.AppDelegate.applicationDidFinishLaunching(Foundation.Notification) -&gt; ()"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/AppDelegate.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "456">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "58B3950E-F748-4661-8E2F-95ED0AF3CC02"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iLoveTranscode_Server/TransmitEncryption.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
+            landmarkName = "readKeyFromKeychain(key:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "58B3950E-F748-4661-8E2F-95ED0AF3CC02 - 7512f8dee74ceffb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 @Swift.MainActor @Sendable () -&gt; () in closure #1 @Sendable () async -&gt; () in static &#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;.TransmitEncryption.readKeyFromKeychain(key: Swift.String, completion: (Swift.Optional&lt;Swift.String&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/TransmitEncryption.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "142"
+                  endingLineNumber = "142"
+                  offsetFromSymbolStart = "844">
+               </Location>
+               <Location
+                  uuid = "58B3950E-F748-4661-8E2F-95ED0AF3CC02 - 7512f8dee74ceffb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 @Swift.MainActor @Sendable () -&gt; () in closure #1 @Sendable () async -&gt; () in static &#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;.TransmitEncryption.readKeyFromKeychain(key: Swift.String, completion: (Swift.Optional&lt;Swift.String&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/TransmitEncryption.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "142"
+                  endingLineNumber = "142"
+                  offsetFromSymbolStart = "632">
+               </Location>
+               <Location
+                  uuid = "58B3950E-F748-4661-8E2F-95ED0AF3CC02 - 7512f8dee74ceffb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 @Swift.MainActor @Sendable () -&gt; () in closure #1 @Sendable () async -&gt; () in static &#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;.TransmitEncryption.readKeyFromKeychain(key: Swift.String, completion: (Swift.Optional&lt;Swift.String&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/TransmitEncryption.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "142"
+                  endingLineNumber = "142"
+                  offsetFromSymbolStart = "628">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C3B7D4E1-F7C8-4E89-BD04-9932B577DC6C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iLoveTranscode_Server/DaVinciResolveScript.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "loadDavinciResolveScript()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "C3B7D4E1-F7C8-4E89-BD04-9932B577DC6C - a7f94277865b413f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;.Resolve.updateCurrentProject() -&gt; ()"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/DaVinciResolveScript.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "40"
+                  endingLineNumber = "40"
+                  offsetFromSymbolStart = "76">
+               </Location>
+               <Location
+                  uuid = "C3B7D4E1-F7C8-4E89-BD04-9932B577DC6C - a7f94277865b413f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;.Resolve.updateCurrentProject() -&gt; ()"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/DaVinciResolveScript.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "40"
+                  endingLineNumber = "40"
+                  offsetFromSymbolStart = "120">
+               </Location>
+               <Location
+                  uuid = "C3B7D4E1-F7C8-4E89-BD04-9932B577DC6C - a7f94277865b413f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;.Resolve.updateCurrentProject() -&gt; ()"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/DaVinciResolveScript.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "40"
+                  endingLineNumber = "40"
+                  offsetFromSymbolStart = "136">
+               </Location>
+               <Location
+                  uuid = "C3B7D4E1-F7C8-4E89-BD04-9932B577DC6C - 610f0bf27e8e36b9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;.Resolve.loadDavinciResolveScript() -&gt; ()"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/DaVinciResolveScript.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "40"
+                  endingLineNumber = "40"
+                  offsetFromSymbolStart = "136">
+               </Location>
+               <Location
+                  uuid = "C3B7D4E1-F7C8-4E89-BD04-9932B577DC6C - 610f0bf27e8e36ff"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;.Resolve.loadDavinciResolveScript() -&gt; ()"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/DaVinciResolveScript.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "42"
+                  endingLineNumber = "42"
+                  offsetFromSymbolStart = "108">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2BF49D97-B8EB-4250-AC50-D83904FB4FC3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iLoveTranscode_Server/DaVinciResolveScript.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "loadDavinciResolveScript()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "2BF49D97-B8EB-4250-AC50-D83904FB4FC3 - a7f94277865b41d4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;.Resolve.updateCurrentProject() -&gt; ()"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/DaVinciResolveScript.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "47"
+                  endingLineNumber = "47"
+                  offsetFromSymbolStart = "1032">
+               </Location>
+               <Location
+                  uuid = "2BF49D97-B8EB-4250-AC50-D83904FB4FC3 - 610f0bf27e8e3652"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;.Resolve.loadDavinciResolveScript() -&gt; ()"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/DaVinciResolveScript.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "47"
+                  endingLineNumber = "47"
+                  offsetFromSymbolStart = "1032">
+               </Location>
+               <Location
+                  uuid = "2BF49D97-B8EB-4250-AC50-D83904FB4FC3 - 610f0bf27e8e3990"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;.Resolve.loadDavinciResolveScript() -&gt; ()"
+                  moduleName = "&#x6211;&#x7231;&#x8f6c;&#x7801;&#xb7;&#x53d1;&#x5c04;&#x5668;"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tangzihao/Documents/Xcode_Local_Project/iLoveTranscode_Server/iLoveTranscode_Server/DaVinciResolveScript.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "49"
+                  endingLineNumber = "49"
+                  offsetFromSymbolStart = "996">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6DC63B38-4DF4-4DF6-BE4C-31824DF4BC31"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iLoveTranscode_Server/PythonObjectExtension.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "callFunction(name:withArguments:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2704A1F6-6337-4F45-A7D4-C3DF87224B88"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iLoveTranscode_Server/DaVinciResolveScript.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "loadDavinciResolveScript()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8B8C280D-AA05-4020-A822-B7C3408D641B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iLoveTranscode_Server/DaVinciResolveScript.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "loadDavinciResolveScript()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
