@@ -257,7 +257,13 @@ extension ContentView {
                     guard (self.activityToken ?? "") != activityToken else { return }
                     self.activityToken = String(activityToken)
                     self.lastActivityInfo = nil
-                } else if message.starts(with: "srn@"), let jobId = message.split(separator: "@").last {
+                } else if let job = try? JSONDecoder().decode(StartJob.self, from: message.data(using: .utf8) ?? Data()) {
+                    guard abs(job.date.timeIntervalSinceNow) < 30
+                    else {
+                        print("RenderJob Out of Date")
+                        return
+                    }
+                    print("Start render \(job.jobId)")
                     guard let project = Resolve.shared.wrappedProject,
                           let isRenderingFunc = project.checking[dynamicMember: "IsRenderingInProgress"],
                           let isRenderingObj = try? isRenderingFunc.throwing.dynamicallyCall(withArguments: []),
@@ -266,7 +272,7 @@ extension ContentView {
                     else { return }
                     
                     guard let startRenderFunc = project.checking[dynamicMember: "StartRendering"],
-                          let _ = try? startRenderFunc.throwing.dynamicallyCall(withArguments: [[String(jobId)], false])
+                          let _ = try? startRenderFunc.throwing.dynamicallyCall(withArguments: [[String(job.jobId)], false])
                     else {
                         print("Can not render!")
                         return
@@ -414,8 +420,11 @@ extension ContentView {
                             APNSServer.shared.sendLiveActivityEndNotification(activityToken: activityToken, infoString: encodedString)
                             lastActivityInfo = info
                             print("实时活动：渲染中止")
-                        }
-                        if UserDefaults.standard.bool(forKey: "PushNotificationAnyway"), let deviceToken = deviceToken {
+                            if let deviceToken = deviceToken {
+                                APNSServer.shared.sendEndOfRenderNotification(deviceToken: deviceToken, alert: NotificationAlert(title: "\(projectName)渲染停止", subTitle: nil, body: "渲染任务已停止，\(failedJobCount)个任务未渲染，点击查看详情。"))
+                                print("已发送渲染中止通知")
+                            }
+                        } else if UserDefaults.standard.bool(forKey: "PushNotificationAnyway"), let deviceToken = deviceToken {
                             APNSServer.shared.sendEndOfRenderNotification(deviceToken: deviceToken, alert: NotificationAlert(title: "\(projectName)渲染停止", subTitle: nil, body: "渲染任务已停止，\(failedJobCount)个任务未渲染，点击查看详情。"))
                             print("已发送渲染中止通知")
                         }
@@ -424,6 +433,10 @@ extension ContentView {
                             APNSServer.shared.sendLiveActivityEndNotification(activityToken: activityToken, infoString: encodedString)
                             lastActivityInfo = info
                             print("实时活动：渲染完成")
+                            if let deviceToken = deviceToken {
+                                APNSServer.shared.sendEndOfRenderNotification(deviceToken: deviceToken, alert: NotificationAlert(title: "\(projectName)渲染完成", subTitle: nil, body: "渲染任务已完成，点击查看详情。"))
+                                print("已发送渲染完成通知")
+                            }
                         }
                         if UserDefaults.standard.bool(forKey: "PushNotificationAnyway"), let deviceToken = deviceToken {
                             APNSServer.shared.sendEndOfRenderNotification(deviceToken: deviceToken, alert: NotificationAlert(title: "\(projectName)渲染完成", subTitle: nil, body: "渲染任务已完成，点击查看详情。"))

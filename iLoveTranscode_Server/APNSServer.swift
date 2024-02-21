@@ -42,6 +42,26 @@ class APNSServer {
     private var token: String?
     private var tokenIat: Date?
     
+    public var lastInfoString: String = ""
+    
+    class DelayEndActivity {
+        private var workItem: DispatchWorkItem?
+
+        func runAfterDelay(_ delay: TimeInterval, _ action: @escaping () -> Void) {
+            let deadline = DispatchTime.now() + delay
+            let workItem = DispatchWorkItem {
+                action()
+            }
+            DispatchQueue.main.asyncAfter(deadline: deadline, execute: workItem)
+            self.workItem = workItem
+        }
+
+        func cancel() {
+            workItem?.cancel()
+        }
+    }
+    private var delayEndActivity: DelayEndActivity?
+    
     let sessionDataTask: (Data?, URLResponse?, Error?) -> Void = { data, response, error in
         if let error = error {
             print("Error sending notification request: \(error)")
@@ -108,6 +128,10 @@ class APNSServer {
     }
     
     func sendLiveActivityUpdateNotification(activityToken: String, infoString: String, alert: NotificationAlert?) {
+        if let delayEndActivity = delayEndActivity {
+            delayEndActivity.cancel()
+        }
+        lastInfoString = infoString
         let payload =
             """
                 {
@@ -151,12 +175,13 @@ class APNSServer {
     }
     
     func sendLiveActivityEndNotification(activityToken: String, infoString: String) {
+        lastInfoString = infoString
         let payload =
             """
                 {
                     "aps": {
                         "timestamp": \(Int(Date().timeIntervalSince1970)),
-                        "event": "end",
+                        "event": "update",
                         "content-state": \(infoString),
                         "thread-id": "ProjectInfoLiveActivityNotification"
                     }
@@ -190,6 +215,49 @@ class APNSServer {
         let task = session.dataTask(with: request, completionHandler: sessionDataTask)
         
         task.resume()
+        
+        self.delayEndActivity = DelayEndActivity()
+        self.delayEndActivity?.runAfterDelay(5 * 60, {
+            let payload =
+                """
+                    {
+                        "aps": {
+                            "timestamp": \(Int(Date().timeIntervalSince1970)),
+                            "event": "end",
+                            "content-state": \(infoString),
+                            "thread-id": "ProjectInfoLiveActivityNotification"
+                        }
+                    }
+                """.data(using: .utf8)!
+            
+            // Create an URL for APNs endpoint
+    #if DEBUG
+            let url = URL(string: "https://api.sandbox.push.apple.com/3/device/\(activityToken)")!
+    #else
+            let url = URL(string: "https://api.push.apple.com/3/device/\(activityToken)")!
+    #endif
+            
+            // Create a URLSession
+            let session = URLSession(configuration: .default)
+            
+            // Prepare the request
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.httpBody = payload
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            // Add authorization header with bearer token (JWT)
+            let authorizationToken = self.createJWT()
+            request.addValue("bearer \(authorizationToken)", forHTTPHeaderField: "Authorization")
+            request.addValue("com.water-zi.iLoveTranscode.push-type.liveactivity", forHTTPHeaderField: "apns-topic")
+            request.addValue("liveactivity", forHTTPHeaderField: "apns-push-type")
+            request.addValue("5", forHTTPHeaderField: "apns-priority")
+            
+            // Perform the request
+            let task = session.dataTask(with: request, completionHandler: self.sessionDataTask)
+            
+            task.resume()
+        })
     }
     
     func sendEndOfRenderNotification(deviceToken: String, alert: NotificationAlert) {
@@ -234,7 +302,7 @@ class APNSServer {
         task.resume()
     }
     
-    private func createJWT() -> String {
+    func createJWT() -> String {
         
         let now = getLastFullHourOrHalfHour()
         if now == tokenIat, let token = token {
