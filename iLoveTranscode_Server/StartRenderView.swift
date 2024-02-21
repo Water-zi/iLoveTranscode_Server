@@ -27,6 +27,7 @@ struct StartRenderView: View {
                     Spacer()
                     Text(job.status.string)
                 }
+                .padding(.vertical, 5)
                 .onTapGesture {
                     viewModel.toggleRenderJobSelection(for: job)
                 }
@@ -67,6 +68,9 @@ struct StartRenderView: View {
         }
         .padding(.top)
         .frame(width: 400, height: 300)
+        .onAppear(perform: {
+            viewModel.renderJobsSelectionList.removeAll()
+        })
     }
 }
 

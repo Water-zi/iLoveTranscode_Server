@@ -136,3 +136,11 @@ enum JobStatus: Int, Codable {
         }
     }
 }
+
+struct RemoveJobInfo: Codable {
+    var removedJobId: String
+    
+    enum CodingKeys: String, CodingKey {
+        case removedJobId = "rji"
+    }
+}

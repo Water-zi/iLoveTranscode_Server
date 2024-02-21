@@ -103,13 +103,20 @@ extension ContentView {
         @Published var showStartRenderSelectionListView: Bool = false
         @Published var renderJobsButtonDisabled: Bool = false
         
+        // Detect job delete
+        private var lastRenderJobList: [JobBasicInfo]?
+        
         func tryToGetProject(loop: Bool) async {
             guard Resolve.shared.davinciInstalled,
                   let dvr = Resolve.shared.sys?.modules["fusionscript"].scriptapp("Resolve"),
-                  let projectManager = dvr.callFunction(name: "GetProjectManager", withArguments: []),
-                  let currentProject = projectManager.callFunction(name: "GetCurrentProject", withArguments: []),
-                  let name = currentProject.callFunction(name: "GetName", withArguments: []),
-                  let id = currentProject.callFunction(name: "GetUniqueId", withArguments: [])
+                  let projectMangerFunc = dvr.checking[dynamicMember: "GetProjectManager"],
+                  let projectManager = try? projectMangerFunc.throwing.dynamicallyCall(withArguments: []),
+                  let currentProjectFunc = projectManager.checking[dynamicMember: "GetCurrentProject"],
+                  let currentProject = try? currentProjectFunc.throwing.dynamicallyCall(withArguments: []),
+                  let getNameFunc = currentProject.checking[dynamicMember: "GetName"],
+                  let name = try? getNameFunc.throwing.dynamicallyCall(withArguments: []),
+                  let getIdFunc = currentProject.checking[dynamicMember: "GetUniqueId"],
+                  let id = try? getIdFunc.throwing.dynamicallyCall(withArguments: [])
             else {
                 guard Resolve.shared.davinciInstalled
                 else {
@@ -245,10 +252,25 @@ extension ContentView {
                 } else if message.starts(with: "dtk@"), let deviceToken = message.split(separator: "@").last  {
                     self.deviceToken = String(deviceToken)
                     APNSServer.shared.sendConnectionBuildNotification(deviceToken: String(deviceToken))
+                    self.lastActivityInfo = nil
                 } else if message.starts(with: "atk@"), let activityToken = message.split(separator: "@").last {
                     guard (self.activityToken ?? "") != activityToken else { return }
                     self.activityToken = String(activityToken)
                     self.lastActivityInfo = nil
+                } else if message.starts(with: "srn@"), let jobId = message.split(separator: "@").last {
+                    guard let project = Resolve.shared.wrappedProject,
+                          let isRenderingFunc = project.checking[dynamicMember: "IsRenderingInProgress"],
+                          let isRenderingObj = try? isRenderingFunc.throwing.dynamicallyCall(withArguments: []),
+                          let isRendering = Bool(isRenderingObj),
+                          !isRendering
+                    else { return }
+                    
+                    guard let startRenderFunc = project.checking[dynamicMember: "StartRendering"],
+                          let _ = try? startRenderFunc.throwing.dynamicallyCall(withArguments: [[String(jobId)], false])
+                    else {
+                        print("Can not render!")
+                        return
+                    }
                 }
                 
             }
@@ -259,6 +281,7 @@ extension ContentView {
         }
         
         func publishData() {
+//            print("s0")
             guard let mqtt = mqtt,
                   mqtt.connState == .connected,
                   let project = Resolve.shared.wrappedProject
@@ -266,8 +289,10 @@ extension ContentView {
                 self.publishTimer?.invalidate()
                 return
             }
-            guard let idPO = project.callFunction(name: "GetUniqueId", withArguments: []),
-                  let id = String(idPO),
+//            print("s1")
+            guard let getIdFunc = project.checking[dynamicMember: "GetUniqueId"],
+                  let idObj = try? getIdFunc.throwing.dynamicallyCall(withArguments: []),
+                  let id = String(idObj),
                   id == self.projectId
             else {
                 print("Project Changed.")
@@ -278,20 +303,32 @@ extension ContentView {
                 }
                 return
             }
+//            print("s2")
             
-            guard let renderJobs = project.callFunction(name: "GetRenderJobList", withArguments: []) else { return }
+            guard let getRenderJobListFunc = project.checking[dynamicMember: "GetRenderJobList"],
+                  let renderJobs = try? getRenderJobListFunc.throwing.dynamicallyCall(withArguments: []),
+                  renderJobs != Resolve.shared.noneObject
+            else { return }
+//            print("s3")
             
             var renderJobList: [JobBasicInfo] = []
             
             for (index, job) in renderJobs.enumerated() {
+//                print("p-1")
+                guard job != Resolve.shared.noneObject else { return }
+//                print("p-0")
                 let jobId = String(job["JobId"]) ?? "Unknown Job Id"
                 let jobName = String(job["RenderJobName"]) ?? "Unknown Job Name"
                 let timelineName = String(job["TimelineName"]) ?? "Unknown Timeline Name"
                 
-                
-                guard let status = project.callFunction(name: "GetRenderJobStatus", withArguments: [jobId]) else { return }
-                
+//                print("p0")
+                guard let getRenderJobStatusFunc = project.checking[dynamicMember: "GetRenderJobStatus"],
+                      let status = try? getRenderJobStatusFunc.throwing.dynamicallyCall(withArguments: [jobId]),
+                      status != Resolve.shared.noneObject
+                else { return }
+//                print("p1")
                 let jobStatus = JobStatus(from: String(status["JobStatus"]) ?? "")
+//                print("p2")
                 let jobProgress = Int(status["CompletionPercentage"]) ?? 0
                 var estimatedTime = 0
                 if status.contains("EstimatedTimeRemainingInMs") {
@@ -306,8 +343,10 @@ extension ContentView {
                 let jobBasicInfo = JobBasicInfo(jobId: jobId, jobName: jobName, timelineName: timelineName, jobStatus: jobStatus, jobProgress: jobProgress, estimatedTime: estimatedTime, timeTaken: timeTaken, order: index)
                 renderJobList.append(jobBasicInfo)
                 
-                let job = renderJobsSelectionList[jobId]
-                renderJobsSelectionList.updateValue(RenderJobSelectionInfo(jobID: jobId, jobName: jobName, timelineName: timelineName, status: jobStatus, order: index, selected: (job?.selected ?? (jobStatus == .ready))), forKey: jobId)
+                if showStartRenderSelectionListView {
+                    let job = renderJobsSelectionList[jobId]
+                    renderJobsSelectionList.updateValue(RenderJobSelectionInfo(jobID: jobId, jobName: jobName, timelineName: timelineName, status: jobStatus, order: index, selected: (job?.selected ?? (jobStatus == .ready))), forKey: jobId)
+                }
                 
                 guard let data = try? JSONEncoder().encode(jobBasicInfo),
                       let dataStr = String(data: data, encoding: .utf8)
@@ -318,13 +357,35 @@ extension ContentView {
                 mqtt.publish(self.publishTopic, withString: dataStr.encrypt(), properties: publishProperties)
             }
             
+            // Remove jobs have been deleted
+            for job in renderJobList {
+                lastRenderJobList?.removeAll(where: { $0.jobId == job.jobId })
+            }
+            for job in lastRenderJobList ?? [] {
+                // These jobs is deleted
+                let removeJob = RemoveJobInfo(removedJobId: job.jobId)
+                guard let data = try? JSONEncoder().encode(removeJob),
+                      let dataStr = String(data: data, encoding: .utf8)
+                else { continue }
+                
+                let publishProperties = MqttPublishProperties()
+                publishProperties.contentType = "String"
+                mqtt.publish(self.publishTopic, withString: dataStr.encrypt(), properties: publishProperties)
+            }
+            lastRenderJobList = renderJobList
+            
             let readyJobCount = renderJobList.filter({ $0.jobStatus == .ready }).count
             let renderingJob = renderJobList.filter({ $0.jobStatus == .rendering }).first ?? renderJobList.last
             let currentJobId = renderingJob?.jobId ?? ""
             var finishJobCount = renderJobList.filter({ $0.jobStatus == .finish }).count
             let failedJobCount = renderJobList.filter({ $0.jobStatus == .failed || $0.jobStatus == .canceled }).count
+//            print("t0")
+            guard let isRenderingFunc = project.checking[dynamicMember: "IsRenderingInProgress"],
+                  let isRenderingObj = try? isRenderingFunc.throwing.dynamicallyCall(withArguments: []),
+                  let isRendering = Bool(isRenderingObj)
+            else { return }
             
-            let isRendering: Bool = Bool(project.callFunction(name: "IsRenderingInProgress", withArguments: []) ?? false) ?? false
+//            print("t1")
             renderJobsButtonDisabled = isRendering
             if isRendering {
                 finishJobCount += 1
@@ -336,7 +397,8 @@ extension ContentView {
                let encodedInfo = try? JSONEncoder().encode(info),
                let encodedString = String(data: encodedInfo, encoding: .utf8) {
                 if lastActivityInfo == nil {
-                    if let activityToken = activityToken {APNSServer.shared.sendLiveActivityUpdateNotification(activityToken: activityToken, infoString: encodedString, alert: NotificationAlert(title: "已订阅实时活动通知", subTitle: nil, body: "任务状态将显示在实时活动中。"))
+                    if let activityToken = activityToken {
+                        APNSServer.shared.sendLiveActivityUpdateNotification(activityToken: activityToken, infoString: encodedString, alert: NotificationAlert(title: "已订阅实时活动通知", subTitle: nil, body: "任务状态将显示在实时活动中。"))
                         lastActivityInfo = info
                         print("实时活动：订阅通知")
                     }
@@ -419,7 +481,12 @@ extension ContentView {
         
         func startRenderJobs() {
             guard let project = Resolve.shared.wrappedProject else { return }
-            let isRendering: Bool = Bool(project.callFunction(name: "IsRenderingInProgress", withArguments: []) ?? false) ?? false
+            
+            guard let isRenderingFunc = project.checking[dynamicMember: "IsRenderingInProgress"],
+                  let isRenderingObj = try? isRenderingFunc.throwing.dynamicallyCall(withArguments: []),
+                  let isRendering = Bool(isRenderingObj)
+            else { return }
+            
             guard !isRendering else { return }
             let jobIds = renderJobsSelectionList.values.filter({ $0.selected }).sorted(by: { $0.order < $1.order }).compactMap({ $0.jobID })
             guard !jobIds.isEmpty,

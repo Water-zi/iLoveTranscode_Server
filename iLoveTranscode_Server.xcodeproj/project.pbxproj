@@ -450,7 +450,7 @@
 				CODE_SIGN_ENTITLEMENTS = iLoveTranscode_Server/iLoveTranscode_Server.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 17;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"iLoveTranscode_Server/Preview Content\"";
 				DEVELOPMENT_TEAM = ZVDC8DS264;
@@ -485,7 +485,7 @@
 				CODE_SIGN_ENTITLEMENTS = iLoveTranscode_Server/iLoveTranscode_Server.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 17;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"iLoveTranscode_Server/Preview Content\"";
 				DEVELOPMENT_TEAM = ZVDC8DS264;
