@@ -62,6 +62,8 @@ class APNSServer {
     }
     private var delayEndActivity: DelayEndActivity?
     
+    public var isDebugEnv: Bool = false
+    
     let sessionDataTask: (Data?, URLResponse?, Error?) -> Void = { data, response, error in
         if let error = error {
             print("Error sending notification request: \(error)")
@@ -98,11 +100,7 @@ class APNSServer {
             """.data(using: .utf8)!
         
         // Create an URL for APNs endpoint
-#if DEBUG
-        let url = URL(string: "https://api.sandbox.push.apple.com/3/device/\(deviceToken)")!
-#else
-        let url = URL(string: "https://api.push.apple.com/3/device/\(deviceToken)")!
-#endif
+        let url = URL(string: "https://api\(isDebugEnv ? ".sandbox" : "").push.apple.com/3/device/\(deviceToken)")!
         
         // Create a URLSession
         let session = URLSession(configuration: .default)
@@ -146,11 +144,7 @@ class APNSServer {
             """.data(using: .utf8)!
         
         // Create an URL for APNs endpoint
-#if DEBUG
-        let url = URL(string: "https://api.sandbox.push.apple.com/3/device/\(activityToken)")!
-#else
-        let url = URL(string: "https://api.push.apple.com/3/device/\(activityToken)")!
-#endif
+        let url = URL(string: "https://api\(isDebugEnv ? ".sandbox" : "").push.apple.com/3/device/\(activityToken)")!
         
         // Create a URLSession
         let session = URLSession(configuration: .default)
@@ -189,11 +183,7 @@ class APNSServer {
             """.data(using: .utf8)!
         
         // Create an URL for APNs endpoint
-#if DEBUG
-        let url = URL(string: "https://api.sandbox.push.apple.com/3/device/\(activityToken)")!
-#else
-        let url = URL(string: "https://api.push.apple.com/3/device/\(activityToken)")!
-#endif
+        let url = URL(string: "https://api\(isDebugEnv ? ".sandbox" : "").push.apple.com/3/device/\(activityToken)")!
         
         // Create a URLSession
         let session = URLSession(configuration: .default)
@@ -231,11 +221,7 @@ class APNSServer {
                 """.data(using: .utf8)!
             
             // Create an URL for APNs endpoint
-    #if DEBUG
-            let url = URL(string: "https://api.sandbox.push.apple.com/3/device/\(activityToken)")!
-    #else
-            let url = URL(string: "https://api.push.apple.com/3/device/\(activityToken)")!
-    #endif
+            let url = URL(string: "https://api\(self.isDebugEnv ? ".sandbox" : "").push.apple.com/3/device/\(activityToken)")!
             
             // Create a URLSession
             let session = URLSession(configuration: .default)
@@ -273,11 +259,7 @@ class APNSServer {
             """.data(using: .utf8)!
         
         // Create an URL for APNs endpoint
-#if DEBUG
-        let url = URL(string: "https://api.sandbox.push.apple.com/3/device/\(deviceToken)")!
-#else
-        let url = URL(string: "https://api.push.apple.com/3/device/\(deviceToken)")!
-#endif
+        let url = URL(string: "https://api\(isDebugEnv ? ".sandbox" : "").push.apple.com/3/device/\(deviceToken)")!
         
         // Create a URLSession
         let session = URLSession(configuration: .default)

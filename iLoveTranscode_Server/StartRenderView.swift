@@ -9,17 +9,18 @@ import SwiftUI
 
 struct StartRenderView: View {
     
-    @StateObject var viewModel: ContentView.ViewModel = .shared
+    @ObservedObject private var viewModel: ContentView.ViewModel = .shared
+    @State var selectedJobs: Set<String> = Set<String>()
+    @Binding var dismiss: Bool
     
     var body: some View {
         VStack {
             Text("请选择需要渲染的任务")
                 .font(.system(size: 18, weight: .bold))
             //                .padding([.top, .horizontal])
-            
             List(viewModel.renderJobsSelectionList.values.sorted(by: { $0.order < $1.order }), id: \.jobID) { job in
                 HStack {
-                    Image(systemName: job.selected ? "checkmark.circle" : "xmark.circle")
+                    Image(systemName: selectedJobs.contains(job.jobID) ? "checkmark.circle" : "xmark.circle")
                     Image(systemName: "briefcase")
                     Text(job.jobName)
                     Image(systemName: "filemenu.and.selection")
@@ -28,10 +29,15 @@ struct StartRenderView: View {
                     Text(job.status.string)
                 }
                 .padding(.vertical, 5)
+                .contentShape(Rectangle())
                 .onTapGesture {
-                    viewModel.toggleRenderJobSelection(for: job)
+                    if selectedJobs.contains(job.jobID) {
+                        selectedJobs.remove(job.jobID)
+                    } else {
+                        selectedJobs.insert(job.jobID)
+                    }
                 }
-                .foregroundStyle(job.selected ? .green : .secondary)
+                .foregroundStyle(selectedJobs.contains(job.jobID) ? .green : .secondary)
             }
             .scrollContentBackground(.hidden)
             
@@ -39,7 +45,7 @@ struct StartRenderView: View {
                 Spacer()
                 
                 Button(action: {
-                    viewModel.showStartRenderSelectionListView = false
+                    dismiss.toggle()
                 }, label: {
                     Image(systemName: "xmark")
                         .padding([.leading, .vertical])
@@ -51,7 +57,8 @@ struct StartRenderView: View {
                 Spacer()
                 
                 Button(action: {
-                    viewModel.startRenderJobs()
+                    viewModel.startRenderJobs(jobIds: Array(selectedJobs))
+                    dismiss.toggle()
                 }, label: {
                     Image(systemName: "play")
                         .padding([.leading, .vertical])
@@ -59,7 +66,7 @@ struct StartRenderView: View {
                         .padding([.trailing, .vertical])
                 })
                 .tint(.green)
-                .disabled(viewModel.renderJobsButtonDisabled || viewModel.renderJobsSelectionList.values.filter({ $0.selected }).isEmpty)
+                .disabled(viewModel.renderJobsButtonDisabled || selectedJobs.isEmpty)
                 .padding(.horizontal)
                 .buttonStyle(.borderless)
                 
@@ -68,12 +75,9 @@ struct StartRenderView: View {
         }
         .padding(.top)
         .frame(width: 400, height: 300)
-        .onAppear(perform: {
-            viewModel.renderJobsSelectionList.removeAll()
-        })
     }
 }
 
 #Preview {
-    StartRenderView()
+    StartRenderView(dismiss: .constant(true))
 }

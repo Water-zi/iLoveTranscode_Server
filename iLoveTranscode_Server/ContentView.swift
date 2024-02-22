@@ -11,9 +11,12 @@ import CoreData
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
-    @StateObject private var viewModel = ViewModel.shared
+    @ObservedObject private var viewModel = ViewModel.shared
     @State private var showPasswordAlert: Bool = UserDefaults.standard.object(forKey: "NotShowRequirePasswordReasonAlert") as? Bool ?? true
     @State private var showStartRenderQAView: Bool = false
+    
+    @State var showStartRenderSelectionListView: Bool = false
+    @State var showDaVinciResolveNotInstalledSheet: Bool = false
     
     var isMenuView: Bool
     
@@ -53,14 +56,17 @@ struct ContentView: View {
                                 .bold()
                                 .task {
                                     guard Resolve.shared.currentProject == nil else { return }
-                                    await viewModel.tryToGetProject(loop: true)
+                                    let result = await viewModel.tryToGetProject(loop: true)
+                                    if result == .notInstalled {
+                                        self.showDaVinciResolveNotInstalledSheet = true
+                                    }
                                 }
                         } else {
                             Text(viewModel.projectName.isEmpty ? "达芬奇未正确安装..." : viewModel.projectName)
                                 .bold()
                                 .foregroundStyle(.red)
                                 .task {
-                                    viewModel.showDaVinciResolveNotInstalledSheet = !Resolve.shared.davinciInstalled
+                                    showDaVinciResolveNotInstalledSheet = !Resolve.shared.davinciInstalled
                                 }
                         }
                         Spacer()
@@ -77,17 +83,15 @@ struct ContentView: View {
                             .tint(.blue)
                         } else if !viewModel.projectName.isEmpty {
                             Button(action: {
-                                viewModel.showStartRenderSelectionListView = true
+                                showStartRenderSelectionListView = true
                             }, label: {
                                 Text(viewModel.renderJobsButtonDisabled ? "正在渲染" : "开始渲染")
                             })
                             .disabled(viewModel.renderJobsButtonDisabled)
                             .buttonStyle(.borderless)
                             .tint(viewModel.renderJobsButtonDisabled ? .green : .blue)
-                            .sheet(isPresented: $viewModel.showStartRenderSelectionListView, onDismiss: {
-                                viewModel.renderJobsSelectionList.removeAll()
-                            }, content: {
-                                StartRenderView()
+                            .popover(isPresented: $showStartRenderSelectionListView, arrowEdge: .trailing, content: {
+                                StartRenderView(dismiss: $showStartRenderSelectionListView)
                             })
                             
                             Button(action: {
@@ -263,7 +267,7 @@ struct ContentView: View {
             }
             .padding(.top, -10)
         }
-        .alert("达芬奇未正确安装...", isPresented: $viewModel.showDaVinciResolveNotInstalledSheet, actions: {
+        .alert("达芬奇未正确安装...", isPresented: $showDaVinciResolveNotInstalledSheet, actions: {
             Button("好的", role: .cancel) { }
             Button("退出", role: .destructive) {
                 NSApplication.shared.terminate(nil)
@@ -286,7 +290,7 @@ struct ContentView: View {
         .frame(width: 300, height: viewHeight())
     }
     
-    func viewHeight() -> CGFloat {
+    @MainActor func viewHeight() -> CGFloat {
         if viewModel.selectedBlocker == .Custom {
             if isMenuView {
                 return 680

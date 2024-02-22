@@ -28,11 +28,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             TransmitEncryption.readKeyFromKeychain(key: "com.water-zi.iLoveTranscode-Server.mqttKey", completion: { privateKey in
                 TransmitEncryption.privateKey = privateKey ?? TransmitEncryption.renewPrivateKey()
+                Task {
+                    await ContentView.ViewModel.shared.generateQRCode()
+                }
             })
             UserDefaults.standard.setValue(alert.suppressionButton?.state == .on, forKey: "NotShowRequirePasswordReasonAlert")
         } else {
             TransmitEncryption.readKeyFromKeychain(key: "com.water-zi.iLoveTranscode-Server.mqttKey", completion: { privateKey in
                 TransmitEncryption.privateKey = privateKey ?? TransmitEncryption.renewPrivateKey()
+                Task {
+                    await ContentView.ViewModel.shared.generateQRCode()
+                }
             })
         }
     }
@@ -60,11 +66,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     """.data(using: .utf8)!
                 
                 // Create an URL for APNs endpoint
-        #if DEBUG
-                let url = URL(string: "https://api.sandbox.push.apple.com/3/device/\(activityToken)")!
-        #else
-                let url = URL(string: "https://api.push.apple.com/3/device/\(activityToken)")!
-        #endif
+                let url = URL(string: "https://api\(APNSServer.shared.isDebugEnv ? ".sandbox" : "").push.apple.com/3/device/\(activityToken)")!
                 
                 // Create a URLSession
                 let session = URLSession(configuration: .default)
@@ -101,11 +103,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     """.data(using: .utf8)!
                 
                 // Create an URL for APNs endpoint
-        #if DEBUG
-                let url = URL(string: "https://api.sandbox.push.apple.com/3/device/\(deviceToken)")!
-        #else
-                let url = URL(string: "https://api.push.apple.com/3/device/\(deviceToken)")!
-        #endif
+                let url = URL(string: "https://api\(APNSServer.shared.isDebugEnv ? ".sandbox" : "").push.apple.com/3/device/\(deviceToken)")!
                 
                 // Create a URLSession
                 let session = URLSession(configuration: .default)

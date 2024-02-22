@@ -54,7 +54,10 @@ struct RenderJobSelectionInfo {
     var timelineName: String
     var status: JobStatus
     var order: Int
-    var selected: Bool
+}
+
+enum GetResolveError: Error {
+    case notInstalled, notOpened
 }
 
 extension ContentView {
@@ -85,7 +88,6 @@ extension ContentView {
         @Published var canRetryGetProject: Bool = false
         @Published var projectName: String = ""
         private var projectId: String = ""
-        @Published var showDaVinciResolveNotInstalledSheet: Bool = false
         
         private var publishTopic: String = ""
         
@@ -100,13 +102,12 @@ extension ContentView {
         @Published private(set) var lastIsRendering: Bool = false
         
         @Published var renderJobsSelectionList: [String : RenderJobSelectionInfo] = [:]
-        @Published var showStartRenderSelectionListView: Bool = false
         @Published var renderJobsButtonDisabled: Bool = false
         
         // Detect job delete
         private var lastRenderJobList: [JobBasicInfo]?
         
-        func tryToGetProject(loop: Bool) async {
+        func tryToGetProject(loop: Bool) async -> GetResolveError? {
             guard Resolve.shared.davinciInstalled,
                   let dvr = Resolve.shared.sys?.modules["fusionscript"].scriptapp("Resolve"),
                   let projectMangerFunc = dvr.checking[dynamicMember: "GetProjectManager"],
@@ -120,8 +121,7 @@ extension ContentView {
             else {
                 guard Resolve.shared.davinciInstalled
                 else {
-                    showDaVinciResolveNotInstalledSheet = true
-                    return
+                    return .notInstalled
                 }
                 projectName = ""
                 qrCodeImage = nil
@@ -130,13 +130,16 @@ extension ContentView {
                 await MainActor.run {
                     self.canRetryGetProject = true
                 }
-                guard loop else { return }
-                print("Will retry in 1s")
-                Task {
-                    try? await Task.sleep(for: .seconds(1))
-                    await tryToGetProject(loop: true)
+                guard loop else { return .notOpened }
+                
+                let result = try? await withCheckedThrowingContinuation { (continuation: CheckedContinuation<GetResolveError?, Error>) in
+                    Task {
+                        try? await Task.sleep(for: .seconds(1))
+                        let projectStatus = await tryToGetProject(loop: true)
+                        continuation.resume(returning: projectStatus)
+                    }
                 }
-                return
+                return result
             }
             Resolve.shared.projectManager = projectManager
             Resolve.shared.currentProject = currentProject
@@ -152,6 +155,7 @@ extension ContentView {
             } else {
                 self.connectToMQTTBlocker()
             }
+            return nil
         }
         
         func connectToMQTTBlocker() {
@@ -218,12 +222,16 @@ extension ContentView {
                 guard let message = String(data: Data(message.payload), encoding: .utf8)?.decrypt() else { return }
                 
                 if message.starts(with: "req@"), let jobId = message.split(separator: "@").last {
-                    let jobList = project.GetRenderJobList()
+                    guard let getProjectListFunc = project.checking[dynamicMember: "GetRenderJobList"],
+                          let jobList = try? getProjectListFunc.throwing.dynamicallyCall(withArguments: [])
+                    else {
+                        return
+                    }
                     guard let requestJob = jobList.filter({ String($0["JobId"]) ?? "" == jobId }).first else { return }
                     
                     let details = JobDetails(
                         jobId: String(String(requestJob["JobId"])?.suffix(4) ?? ""),
-                        targetDir: String(requestJob["TargetDir"])?.shorten(maxLength: 60) ?? "",
+                        targetDir: String(requestJob["TargetDir"])?.shorten(maxLength: 50) ?? "",
                         isExportVideo: Bool(requestJob["IsExportVideo"]) ?? false,
                         isExportAudio: Bool(requestJob["IsExportAudio"]) ?? false,
                         formatWidth: Int(requestJob["FormatWidth"]) ?? 0,
@@ -257,6 +265,12 @@ extension ContentView {
                     guard (self.activityToken ?? "") != activityToken else { return }
                     self.activityToken = String(activityToken)
                     self.lastActivityInfo = nil
+                } else if message.starts(with: "env@"), let env = message.split(separator: "@").last {
+                    if env == "debug" {
+                        APNSServer.shared.isDebugEnv = true
+                    } else if env == "release" {
+                        APNSServer.shared.isDebugEnv = false
+                    }
                 } else if let job = try? JSONDecoder().decode(StartJob.self, from: message.data(using: .utf8) ?? Data()) {
                     guard abs(job.date.timeIntervalSinceNow) < 30
                     else {
@@ -349,10 +363,7 @@ extension ContentView {
                 let jobBasicInfo = JobBasicInfo(jobId: jobId, jobName: jobName, timelineName: timelineName, jobStatus: jobStatus, jobProgress: jobProgress, estimatedTime: estimatedTime, timeTaken: timeTaken, order: index)
                 renderJobList.append(jobBasicInfo)
                 
-                if showStartRenderSelectionListView {
-                    let job = renderJobsSelectionList[jobId]
-                    renderJobsSelectionList.updateValue(RenderJobSelectionInfo(jobID: jobId, jobName: jobName, timelineName: timelineName, status: jobStatus, order: index, selected: (job?.selected ?? (jobStatus == .ready))), forKey: jobId)
-                }
+                renderJobsSelectionList.updateValue(RenderJobSelectionInfo(jobID: jobId, jobName: jobName, timelineName: timelineName, status: jobStatus, order: index), forKey: jobId)
                 
                 guard let data = try? JSONEncoder().encode(jobBasicInfo),
                       let dataStr = String(data: data, encoding: .utf8)
@@ -377,6 +388,9 @@ extension ContentView {
                 let publishProperties = MqttPublishProperties()
                 publishProperties.contentType = "String"
                 mqtt.publish(self.publishTopic, withString: dataStr.encrypt(), properties: publishProperties)
+                
+                //remove job from Start Render List too
+                renderJobsSelectionList.removeValue(forKey: removeJob.removedJobId)
             }
             lastRenderJobList = renderJobList
             
@@ -488,11 +502,7 @@ extension ContentView {
             return "\(token.prefix(4))****\(token.suffix(4))"
         }
         
-        func toggleRenderJobSelection(for job: RenderJobSelectionInfo) {
-            renderJobsSelectionList[job.jobID]?.selected.toggle()
-        }
-        
-        func startRenderJobs() {
+        func startRenderJobs(jobIds: [String]) {
             guard let project = Resolve.shared.wrappedProject else { return }
             
             guard let isRenderingFunc = project.checking[dynamicMember: "IsRenderingInProgress"],
@@ -501,17 +511,14 @@ extension ContentView {
             else { return }
             
             guard !isRendering else { return }
-            let jobIds = renderJobsSelectionList.values.filter({ $0.selected }).sorted(by: { $0.order < $1.order }).compactMap({ $0.jobID })
             guard !jobIds.isEmpty,
                   let startRenderFunc = project.checking[dynamicMember: "StartRendering"],
                   let _ = try? startRenderFunc.throwing.dynamicallyCall(withArguments: [jobIds, false])
             else {
                 print("Can not render!")
-                showStartRenderSelectionListView = false
                 return
             }
             print("Start render \(jobIds)")
-            showStartRenderSelectionListView = false
         }
         
     }
