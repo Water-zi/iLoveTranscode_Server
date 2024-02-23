@@ -14,7 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         if UserDefaults.standard.object(forKey: "NotShowRequirePasswordReasonAlert") == nil ||
-           UserDefaults.standard.bool(forKey: "NotShowRequirePasswordReasonAlert") == false
+            UserDefaults.standard.bool(forKey: "NotShowRequirePasswordReasonAlert") == false
         {
             
             let alert = NSAlert()
@@ -52,81 +52,81 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         let response = alert.runModal()
         if response == .alertFirstButtonReturn {
-            if let activityToken = ContentView.ViewModel.shared.activityToken {
-                let payload =
-                    """
-                        {
-                            "aps": {
-                                "timestamp": \(Int(Date().timeIntervalSince1970)),
-                                "event": "end",
-                                "content-state": \(APNSServer.shared.lastInfoString),
-                                "thread-id": "ProjectInfoLiveActivityNotification"
-                            }
-                        }
-                    """.data(using: .utf8)!
-                
-                // Create an URL for APNs endpoint
-                let url = URL(string: "https://api\(APNSServer.shared.isDebugEnv ? ".sandbox" : "").push.apple.com/3/device/\(activityToken)")!
-                
-                // Create a URLSession
-                let session = URLSession(configuration: .default)
-                
-                // Prepare the request
-                var request = URLRequest(url: url)
-                request.httpMethod = "POST"
-                request.httpBody = payload
-                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                
-                // Add authorization header with bearer token (JWT)
-                let authorizationToken = APNSServer.shared.createJWT()
-                request.addValue("bearer \(authorizationToken)", forHTTPHeaderField: "Authorization")
-                request.addValue("com.water-zi.iLoveTranscode.push-type.liveactivity", forHTTPHeaderField: "apns-topic")
-                request.addValue("liveactivity", forHTTPHeaderField: "apns-push-type")
-                request.addValue("5", forHTTPHeaderField: "apns-priority")
-                
-                // Perform the request
-                let task = session.dataTask(with: request, completionHandler: APNSServer.shared.sessionDataTask)
-                
-                task.resume()
-            }
-            if ContentView.ViewModel.shared.lastIsRendering,
-               let deviceToken = ContentView.ViewModel.shared.deviceToken {
-                let payload =
-                    """
-                        {
-                            "aps": {
-                                \(NotificationAlert(title: "我爱转码·发射器已退出", subTitle: nil, body: "发射器在任务未完成时退出，任务状态将不再更新，敬请留意。").getString())
-                                "sound": "default",
-                                "thread-id": "ServerQuitNotification"
-                            }
-                        }
-                    """.data(using: .utf8)!
-                
-                // Create an URL for APNs endpoint
-                let url = URL(string: "https://api\(APNSServer.shared.isDebugEnv ? ".sandbox" : "").push.apple.com/3/device/\(deviceToken)")!
-                
-                // Create a URLSession
-                let session = URLSession(configuration: .default)
-                
-                // Prepare the request
-                var request = URLRequest(url: url)
-                request.httpMethod = "POST"
-                request.httpBody = payload
-                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                
-                // Add authorization header with bearer token (JWT)
-                let authorizationToken = APNSServer.shared.createJWT()
-                request.addValue("bearer \(authorizationToken)", forHTTPHeaderField: "Authorization")
-                request.addValue("com.water-zi.iLoveTranscode", forHTTPHeaderField: "apns-topic")
-                request.addValue("alert", forHTTPHeaderField: "apns-push-type")
-                request.addValue("5", forHTTPHeaderField: "apns-priority")
-                
-                
-                // Perform the request
-                let task = session.dataTask(with: request, completionHandler: APNSServer.shared.sessionDataTask)
-                
-                task.resume()
-            }
+//            if let activityToken = ContentView.ViewModel.shared.activityToken {
+//                let payload =
+//                    """
+//                        {
+//                            "aps": {
+//                                "timestamp": \(Int(Date().timeIntervalSince1970)),
+//                                "event": "end",
+//                                "content-state": \(APNSServer.shared.lastInfoString),
+//                                "thread-id": "ProjectInfoLiveActivityNotification"
+//                            }
+//                        }
+//                    """.data(using: .utf8)!
+//                
+//                // Create an URL for APNs endpoint
+//                let url = URL(string: "https://api\(APNSServer.shared.isDebugEnv ? ".sandbox" : "").push.apple.com/3/device/\(activityToken)")!
+//                
+//                // Create a URLSession
+//                let session = URLSession(configuration: .default)
+//                
+//                // Prepare the request
+//                var request = URLRequest(url: url)
+//                request.httpMethod = "POST"
+//                request.httpBody = payload
+//                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+//                
+//                // Add authorization header with bearer token (JWT)
+//                let authorizationToken = APNSServer.shared.createJWT()
+//                request.addValue("bearer \(authorizationToken)", forHTTPHeaderField: "Authorization")
+//                request.addValue("com.water-zi.iLoveTranscode.push-type.liveactivity", forHTTPHeaderField: "apns-topic")
+//                request.addValue("liveactivity", forHTTPHeaderField: "apns-push-type")
+//                request.addValue("5", forHTTPHeaderField: "apns-priority")
+//                
+//                // Perform the request
+//                let task = session.dataTask(with: request, completionHandler: APNSServer.shared.sessionDataTask)
+//                
+//                task.resume()
+//            }
+//            if ContentView.ViewModel.shared.lastIsRendering,
+//               let deviceToken = ContentView.ViewModel.shared.deviceToken {
+//                let payload =
+//                    """
+//                        {
+//                            "aps": {
+//                                \(NotificationAlert(title: "我爱转码·发射器已退出", subTitle: nil, body: "发射器在任务未完成时退出，任务状态将不再更新，敬请留意。").getString())
+//                                "sound": "default",
+//                                "thread-id": "ServerQuitNotification"
+//                            }
+//                        }
+//                    """.data(using: .utf8)!
+//                
+//                // Create an URL for APNs endpoint
+//                let url = URL(string: "https://api\(APNSServer.shared.isDebugEnv ? ".sandbox" : "").push.apple.com/3/device/\(deviceToken)")!
+//                
+//                // Create a URLSession
+//                let session = URLSession(configuration: .default)
+//                
+//                // Prepare the request
+//                var request = URLRequest(url: url)
+//                request.httpMethod = "POST"
+//                request.httpBody = payload
+//                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+//                
+//                // Add authorization header with bearer token (JWT)
+//                let authorizationToken = APNSServer.shared.createJWT()
+//                request.addValue("bearer \(authorizationToken)", forHTTPHeaderField: "Authorization")
+//                request.addValue("com.water-zi.iLoveTranscode", forHTTPHeaderField: "apns-topic")
+//                request.addValue("alert", forHTTPHeaderField: "apns-push-type")
+//                request.addValue("5", forHTTPHeaderField: "apns-priority")
+//                
+//                
+//                // Perform the request
+//                let task = session.dataTask(with: request, completionHandler: APNSServer.shared.sessionDataTask)
+//                
+//                task.resume()
+//            }
             return .terminateNow
         } else {
             return .terminateCancel

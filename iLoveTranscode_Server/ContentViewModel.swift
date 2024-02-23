@@ -96,9 +96,9 @@ extension ContentView {
         private var publishTimer: Timer?
         
         //        @Published var lastCommand: String = "Latest Command Will be Display Here."
-        @Published var deviceToken: String?
-        @Published var activityToken: String?
-        private var lastActivityInfo: ProjectInfoToWidget?
+        @Published var deviceTokens: Set<String> = Set<String>()
+        @Published var activityTokens: Set<String> = Set<String>()
+        private var lastActivityInfo: [String : ProjectInfoToWidget?] = [:]
         @Published private(set) var lastIsRendering: Bool = false
         
         @Published var renderJobsSelectionList: [String : RenderJobSelectionInfo] = [:]
@@ -258,13 +258,16 @@ extension ContentView {
                     _ = mqtt.publish(self.publishTopic, withString: dataStr.encrypt(), properties: publishProperties)
                     
                 } else if message.starts(with: "dtk@"), let deviceToken = message.split(separator: "@").last  {
-                    self.deviceToken = String(deviceToken)
+                    let result = self.deviceTokens.insert(String(deviceToken))
+                    guard result.inserted else { return }
                     APNSServer.shared.sendConnectionBuildNotification(deviceToken: String(deviceToken))
-                    self.lastActivityInfo = nil
                 } else if message.starts(with: "atk@"), let activityToken = message.split(separator: "@").last {
-                    guard (self.activityToken ?? "") != activityToken else { return }
-                    self.activityToken = String(activityToken)
-                    self.lastActivityInfo = nil
+                    let result = self.activityTokens.insert(String(activityToken))
+                    guard result.inserted else { return }
+                    self.lastActivityInfo.updateValue(nil, forKey: String(activityToken))
+                } else if message.starts(with: "rma@"), let activityToken = message.split(separator: "@").last {
+                    self.activityTokens.remove(String(activityToken))
+                    self.lastActivityInfo.removeValue(forKey: String(activityToken))
                 } else if message.starts(with: "env@"), let env = message.split(separator: "@").last {
                     if env == "debug" {
                         APNSServer.shared.isDebugEnv = true
@@ -413,55 +416,47 @@ extension ContentView {
             
             // Send Live Activity and Notifications
             let info = ProjectInfoToWidget(readyJobNumber: readyJobCount, failedJobNumber: failedJobCount, finishJobNumber: finishJobCount, isRendering: isRendering, lastUpdate: Date(), currentJobId: currentJobId, currentJobName: renderingJob?.jobName ?? "No Current Job", currentTimelineName: renderingJob?.timelineName ?? "No Current Timeline", currentJobStatus: renderingJob?.jobStatus ?? .unknown, currentJobProgress: renderingJob?.jobProgress ?? 0, currentJobDurationString: renderingJob?.formatedJobDuration(rendering: isRendering) ?? "Unknown")
-            if lastActivityInfo != info,
-               let encodedInfo = try? JSONEncoder().encode(info),
-               let encodedString = String(data: encodedInfo, encoding: .utf8) {
-                if lastActivityInfo == nil {
-                    if let activityToken = activityToken {
-                        APNSServer.shared.sendLiveActivityUpdateNotification(activityToken: activityToken, infoString: encodedString, alert: NotificationAlert(title: "已订阅实时活动通知", subTitle: nil, body: "任务状态将显示在实时活动中。"))
-                        lastActivityInfo = info
-                        print("实时活动：订阅通知")
-                    }
+            guard let encodedInfo = try? JSONEncoder().encode(info),
+                  let encodedString = String(data: encodedInfo, encoding: .utf8)
+            else {
+                return
+            }
+            
+            for activityToken in activityTokens {
+                if lastActivityInfo[activityToken] == nil {
+                    APNSServer.shared.sendLiveActivityUpdateNotification(activityToken: activityToken, infoString: encodedString, alert: NotificationAlert(title: "已订阅实时活动通知", subTitle: nil, body: "任务状态将显示在实时活动中。"))
+                    print("实时活动：订阅通知")
                 } else if isRendering != lastIsRendering {
                     if isRendering == true {
-                        if let activityToken = activityToken {
                             APNSServer.shared.sendLiveActivityUpdateNotification(activityToken: activityToken, infoString: encodedString, alert: NotificationAlert(title: "开始渲染", subTitle: nil, body: "任务队列已开始渲染，您将在队列停止时收到通知。"))
-                            lastActivityInfo = info
                             print("实时活动：开始渲染")
-                        }
                     } else if failedJobCount > 0 {
-                        if let activityToken = activityToken {
                             APNSServer.shared.sendLiveActivityEndNotification(activityToken: activityToken, infoString: encodedString)
-                            lastActivityInfo = info
                             print("实时活动：渲染中止")
-                            if let deviceToken = deviceToken {
-                                APNSServer.shared.sendEndOfRenderNotification(deviceToken: deviceToken, alert: NotificationAlert(title: "\(projectName)渲染停止", subTitle: nil, body: "渲染任务已停止，\(failedJobCount)个任务未渲染，点击查看详情。"))
-                                print("已发送渲染中止通知")
-                            }
-                        } else if UserDefaults.standard.bool(forKey: "PushNotificationAnyway"), let deviceToken = deviceToken {
+                    } else {
+                            APNSServer.shared.sendLiveActivityEndNotification(activityToken: activityToken, infoString: encodedString)
+                            print("实时活动：渲染完成")
+                    }
+                } else if lastActivityInfo[activityToken] != info {
+                        APNSServer.shared.sendLiveActivityUpdateNotification(activityToken: activityToken, infoString: encodedString, alert: nil)
+                        print("实时活动：状态更新")
+                }
+                lastActivityInfo.updateValue(info, forKey: activityToken)
+            }
+            
+            if isRendering != lastIsRendering {
+                for deviceToken in deviceTokens {
+                    if isRendering {
+                        APNSServer.shared.sendEndOfRenderNotification(deviceToken: deviceToken, alert: NotificationAlert(title: "\(projectName)渲染开始", subTitle: nil, body: "请留意实时活动、任务通知。点击查看详情。"))
+                        print("已发送开始渲染通知")
+                    } else {
+                        if failedJobCount > 0 {
                             APNSServer.shared.sendEndOfRenderNotification(deviceToken: deviceToken, alert: NotificationAlert(title: "\(projectName)渲染停止", subTitle: nil, body: "渲染任务已停止，\(failedJobCount)个任务未渲染，点击查看详情。"))
                             print("已发送渲染中止通知")
-                        }
-                    } else {
-                        if let activityToken = activityToken {
-                            APNSServer.shared.sendLiveActivityEndNotification(activityToken: activityToken, infoString: encodedString)
-                            lastActivityInfo = info
-                            print("实时活动：渲染完成")
-                            if let deviceToken = deviceToken {
-                                APNSServer.shared.sendEndOfRenderNotification(deviceToken: deviceToken, alert: NotificationAlert(title: "\(projectName)渲染完成", subTitle: nil, body: "渲染任务已完成，点击查看详情。"))
-                                print("已发送渲染完成通知")
-                            }
-                        }
-                        if UserDefaults.standard.bool(forKey: "PushNotificationAnyway"), let deviceToken = deviceToken {
+                        } else {
                             APNSServer.shared.sendEndOfRenderNotification(deviceToken: deviceToken, alert: NotificationAlert(title: "\(projectName)渲染完成", subTitle: nil, body: "渲染任务已完成，点击查看详情。"))
                             print("已发送渲染完成通知")
                         }
-                    }
-                } else {
-                    if let activityToken = activityToken {
-                        APNSServer.shared.sendLiveActivityUpdateNotification(activityToken: activityToken, infoString: encodedString, alert: nil)
-                        lastActivityInfo = info
-                        print("实时活动：状态更新")
                     }
                 }
             }
@@ -493,13 +488,27 @@ extension ContentView {
         }
         
         func getDeviceTokenString() -> String {
-            guard let token = deviceToken, token.count > 8 else { return "密钥不正确" }
-            return "\(token.prefix(4))****\(token.suffix(4))"
+            if deviceTokens.isEmpty {
+                return "请在APP中添加并打开项目..."
+            } else if deviceTokens.count == 1 {
+                guard let token = deviceTokens.first, token.count > 8 else { return "密钥不正确" }
+                return "\(token.prefix(4))****\(token.suffix(4))"
+            } else {
+                guard let token = deviceTokens.first, token.count > 8 else { return "密钥不正确" }
+                return "\(token.prefix(4))****\(token.suffix(4)) 等\(deviceTokens.count)台设备"
+            }
         }
         
         func getActivityTokenString() -> String {
-            guard let token = activityToken, token.count > 8 else { return "密钥不正确" }
-            return "\(token.prefix(4))****\(token.suffix(4))"
+            if activityTokens.isEmpty {
+                return "请在APP的项目里订阅通知..."
+            } else if activityTokens.count == 1 {
+                guard let token = activityTokens.first, token.count > 8 else { return "密钥不正确" }
+                return "\(token.prefix(4))****\(token.suffix(4))"
+            } else {
+                guard let token = activityTokens.first, token.count > 8 else { return "密钥不正确" }
+                return "\(token.prefix(4))****\(token.suffix(4)) 等\(activityTokens.count)台设备"
+            }
         }
         
         func startRenderJobs(jobIds: [String]) {

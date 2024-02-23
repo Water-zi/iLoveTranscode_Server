@@ -200,22 +200,12 @@ struct ContentView: View {
                 VStack(spacing: 12) {
                     HStack {
                         Text("设备密钥")
-                        if let _ = viewModel.deviceToken {
-                            Text(viewModel.getDeviceTokenString())
-                        } else {
-                            Text("请在APP中添加或打开项目...")
-                                .foregroundStyle(.secondary)
-                        }
+                        Text(viewModel.getDeviceTokenString())
                         Spacer()
                     }
                     HStack {
                         Text("活动密钥")
-                        if let _ = viewModel.activityToken {
-                            Text(viewModel.getActivityTokenString())
-                        } else {
-                            Text("请在APP的项目里订阅通知...")
-                                .foregroundStyle(.secondary)
-                        }
+                        Text(viewModel.getActivityTokenString())
                         Spacer()
                     }
                 }
