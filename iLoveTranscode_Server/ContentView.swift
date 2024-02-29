@@ -17,6 +17,7 @@ struct ContentView: View {
     
     @State var showStartRenderSelectionListView: Bool = false
     @State var showDaVinciResolveNotInstalledSheet: Bool = false
+    @State var showDeviceTokensView: Bool = false
     
     var isMenuView: Bool
     
@@ -59,6 +60,11 @@ struct ContentView: View {
                                     let result = await viewModel.tryToGetProject(loop: true)
                                     if result == .notInstalled {
                                         self.showDaVinciResolveNotInstalledSheet = true
+                                    }
+                                    TransmitEncryption.getDeviceTokens { tokens in
+                                        DispatchQueue.main.async {
+                                            viewModel.deviceTokens = Set(tokens ?? [])
+                                        }
                                     }
                                 }
                         } else {
@@ -202,6 +208,18 @@ struct ContentView: View {
                         Text("设备密钥")
                         Text(viewModel.getDeviceTokenString())
                         Spacer()
+                        if viewModel.deviceTokens.count > 0 {
+                            Button(action: {
+                                showDeviceTokensView.toggle()
+                            }, label: {
+                                Image(systemName: "info.circle")
+                            })
+                            .tint(.blue)
+                            .buttonStyle(.borderless)
+                            .popover(isPresented: $showDeviceTokensView, arrowEdge: .trailing, content: {
+                                DeviceTokensView(dismiss: $showDeviceTokensView)
+                            })
+                        }
                     }
                     HStack {
                         Text("活动密钥")

@@ -534,7 +534,7 @@ extension ContentView {
     
 }
 
-fileprivate extension String {
+extension String {
     func shorten(maxLength: Int) -> String {
         guard self.count > maxLength else {
             return self

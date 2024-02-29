@@ -30,6 +30,45 @@ class TransmitEncryption {
         ).takeUnretainedValue() as? String
     }
     
+    static public func modifyDeviceToken(token: String, save: Bool, completion: @escaping ([String]) -> Void) {
+        readKeyFromKeychain(key: "com.water-zi.iLoveTranscode-Server.deviceTokens") { result in
+            var tokens = [String]()
+            if let result = result, let resultData = Data(base64Encoded: result) {
+                let decoder = JSONDecoder()
+                tokens = (try? decoder.decode([String].self, from: resultData)) ?? [String]()
+            }
+            
+            if save {
+                guard !tokens.contains(token) else { return }
+                tokens.append(token)
+            } else {
+                guard token.contains(token) else { return }
+                tokens.removeAll(where: { $0 == token })
+            }
+            
+            let encoder = JSONEncoder()
+            guard let encodedData = try? encoder.encode(tokens) else { return }
+            let encodedString = encodedData.base64EncodedString()
+            saveKeyToKeychain(key: "com.water-zi.iLoveTranscode-Server.deviceTokens", value: encodedString) { result in
+                print(result ? "成功保存Token" : "Token保存失败")
+                if result {
+                    completion(tokens)
+                }
+            }
+        }
+    }
+    
+    static public func getDeviceTokens(completion: @escaping ([String]?) -> Void ) {
+        readKeyFromKeychain(key: "com.water-zi.iLoveTranscode-Server.deviceTokens") { result in
+            guard let result = result,
+                  let resultData = Data(base64Encoded: result)
+            else { return }
+            let decoder = JSONDecoder()
+            var tokens = try? decoder.decode([String].self, from: resultData)
+            completion(tokens)
+        }
+    }
+    
     static public func renewPrivateKey() -> String {
         let systemID = getSystemUUID() ?? UUID().uuidString
         let uuID = UUID().uuidString
@@ -127,11 +166,11 @@ class TransmitEncryption {
                     completion(value)
                     return
                 }
-            } else {
+            } else if status != errSecItemNotFound {
                 await MainActor.run {
                     let alert = NSAlert()
                     alert.messageText = "您拒绝了APP访问钥匙串的请求"
-                    alert.informativeText = "为了保存您的加密私钥，我们需要访问特定的钥匙串。如果您拒绝访问，私钥将在每次启动时更新。在这种情况下，您每次都需要在\"我爱转码\"APP中扫描二维码来更新客户端密钥。\n\n如您刚刚不慎点击拒绝，您可以在系统APP：\"钥匙串访问\"中搜索\"com.water-zi.iLoveTranscode-Server.mqttKey\"，右键选择\"显示简介\"，然后在\"访问控制\"中删除这个APP，最后点击\"存储更改\"。您将在下次启动APP时再次被要求输入密码。"
+                    alert.informativeText = "为了保存您的加密私钥，我们需要访问特定的钥匙串。如果您拒绝访问，私钥将在每次启动时更新。在这种情况下，您每次都需要在\"我爱转码\"APP中扫描二维码来更新客户端密钥。\n\n如您刚刚不慎点击拒绝，您可以在系统APP：\"钥匙串访问\"中搜索\"com.water-zi.iLoveTranscode-Server\"，右键选择\"显示简介\"，然后在\"访问控制\"中删除这个APP，最后点击\"存储更改\"。您将在下次启动APP时再次被要求输入密码。"
                     alert.addButton(withTitle: "复制搜索内容")
                     alert.addButton(withTitle: "再说吧")
                     
@@ -139,7 +178,7 @@ class TransmitEncryption {
                     
                     if result == .alertFirstButtonReturn {
                         NSPasteboard.general.clearContents()
-                        let result = NSPasteboard.general.setString("com.water-zi.iLoveTranscode-Server.mqttKey", forType: .string)
+                        let result = NSPasteboard.general.setString("com.water-zi.iLoveTranscode-Server", forType: .string)
                         print(result)
                     }
                 }

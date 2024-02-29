@@ -34,8 +34,12 @@ class Resolve: NSObject {
         setenv("PYTHONHOME", stdLibPath, 1)
         setenv("PYTHONPATH", "\(stdLibPath):\(libDynloadPath)", 1)
         Py_Initialize()
+        davinciInstalled = false
         noneObject = Python.None
+//        let app = ResolveApp.shared
+//        app.newApp()
         loadDavinciResolveScript()
+        
     }
     
     func loadDavinciResolveScript() {
